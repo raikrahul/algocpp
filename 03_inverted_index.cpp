@@ -47,6 +47,7 @@ public:
         // Token "banana": index["banana"] has [10]. 20 > 10. Add 20. List: [10, 20]
         // Token "cherry": index["cherry"] list empty. Add 20. List: [20]
         std::string current_word;
+        
         auto process_word = [&](std::string& w) {
             if (w.empty()) return;
             // Add page.id to list if it's not the same as the last ones (to avoid duplicates for same page)
