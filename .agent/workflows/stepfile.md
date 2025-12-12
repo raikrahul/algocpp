@@ -2,6 +2,11 @@
 description: step
 ---
 
+DO NOT WRITE SOLUTION AT ALL 
+
+EACH STEP OF THE MARDOWN FILE SHOULD BE LARGE ENOUGH TO MAKE ME DO SOMETHING BY HAND, SOME NON TRIVIAL THING BY HAND AND A CORRESPONDING AXIOMATIC BLOCK WITH CODE AND PROOF. 
+
+
 
 
 Each line should loook like this in the axiomatic step file 
@@ -139,23 +144,3 @@ NO FILLER WORDS ON ANY LINE NO ADJECTIVES OR ADVERS OR SUPERLATIVE WORDS ON ANY 
 118. Each step: reason out why doing this.
 119. Markdown: step-wise file, each line = one step, what user does by hand.
 120. No useless spacing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

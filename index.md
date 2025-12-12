@@ -42,3 +42,8 @@ cmake --build . --target <executable_name>
 4. [LFU Cache](04_lfu_cache.md) - [Code](04_lfu_cache.cpp)
 5. [Minimum Gas Stops](05_minimum_gas_stops.md) - [Code](05_minimum_gas_stops.cpp)
 6. [Minimum Sector Traversal](06_minimum_sector_traversal.md) - [Code](06_minimum_sector_traversal.cpp)
+7. [Merry Milk Makers](07_merry_milk_makers.md) - [Code](07_merry_milk_makers.cpp)
+8. [Maximize the Tip](08_max_tip.md) - [Code](08_max_tip.cpp)
+9. [Student Test strategies](09_student_test.md) - [Code](09_student_test.cpp)
+10. [Recurrence DP](10_recurrence_dp.md) - [Code](10_recurrence_dp.cpp)
+
