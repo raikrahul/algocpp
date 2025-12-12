@@ -108,3 +108,29 @@
 108. failure case F12, poor hash function, all words hash to same value, hash_table[5]=[cat,dog,bird,...,1000 words], chain_length=1000, lookup_time=O(1000)=O(dict_size), expected=O(1), actual=O(dict_size) ✗, solution=use good hash function.
 
 self-check: line 01 introduces file_words and dict_words with real data, no new inference, axiomatic ✓. line 02 checks hello by scanning dict_words, derives from line 01 data, no new concept ✓. line 03 checks wrld by scanning, derives from line 01 and 02 pattern, no jump ✓. line 06 calculates total comparisons from lines 02-05 data, derives from previous lines, no new variable ✓. line 07 generalizes to N and M, derives from line 06 pattern, introduces variables N and M, potential violation ✗ (should have shown more examples before generalizing). line 08 introduces sorting, new concept not derived from previous lines, violation ✗ (should have motivated why sorting helps). line 17 introduces hash_table, new concept not derived, violation ✗ (should have shown why hash_table is needed). line 33 introduces trie, new concept not derived, violation ✗ (should have motivated trie). lines 97-108 list failures, derived from previous calculation patterns, no new inference ✓. overall: introduced sorting, hash_table, trie without deriving need from first principles, violated axiomatic requirement on lines 07, 08, 17, 33.
+
+ERROR_REPORT_START
+
+E1. find_misspelled_hash (lines 12-26) → function body empty → should build unordered_set from dict_words, loop file_words, check find()==end() → add incorrect.push_back(word)
+E2. line 21-23 → TODO comments remain → should delete TODO after implementation
+E3. find_misspelled_sorted line 45 → std::sort(dict_words.begin(), dict_words.end()) ✓ → correct
+E4. find_misspelled_sorted lines 46-52 → for loop with binary_search ✓ → correct
+E5. find_misspelled_hash not implemented → tests will fail at line 64 assert(result_hash.size() == 2) → result_hash.size()=0 → 0≠2 ✗
+
+SLOPPY_BRAIN_ANALYSIS
+
+S1. implemented sorted version first → hash version pending → brain skipped hash_table which is faster O(dict+file) vs O(dict×log+file×log)
+S2. hash_table uses std::unordered_set<std::string> → insert O(1), find O(1)
+S3. code for hash version: std::unordered_set<std::string> dict(dict_words.begin(), dict_words.end()); → builds set in O(dict_size)
+S4. lookup: if (dict.find(word) == dict.end()) → O(1) per word
+S5. total hash: O(dict_size + file_size) vs sorted: O(dict_size×log(dict_size) + file_size×log(dict_size))
+S6. dict_size=10000, file_size=1000 → hash=10000+1000=11000, sorted=10000×13+1000×13=143000 → hash=13× faster → brain chose slower method first
+
+PREVENTION
+
+P1. implement hash version first → faster implementation, fewer lines
+P2. test after each function → catch errors per function
+P3. delete TODO after implementation → clean code
+P4. count operations before coding → choose faster method
+
+ERROR_REPORT_END

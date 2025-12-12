@@ -18,9 +18,20 @@ std::vector<std::string> find_misspelled_hash(
     
     std::vector<std::string> incorrect;
     
-    // TODO: build hash_table from dict_words
-    // TODO: for each word in file_words
-    //       if word not in hash_table → add to incorrect
+    // dict_words=[hello,world,test,spelling] → unordered_set size=4
+    // insert: hash(hello), hash(world), hash(test), hash(spelling)
+    std::unordered_set<std::string> dict(dict_words.begin(), dict_words.end());
+    
+    // file_words=[hello,wrld,test,speling]
+    // check hello → dict.find(hello)≠end() ✓ → skip
+    // check wrld → dict.find(wrld)==end() ✗ → incorrect.push_back(wrld)
+    // check test → dict.find(test)≠end() ✓ → skip
+    // check speling → dict.find(speling)==end() ✗ → incorrect.push_back(speling)
+    for (const auto& word : file_words) {
+        if (dict.find(word) == dict.end()) {
+            incorrect.push_back(word);
+        }
+    }
     
     return incorrect;
 }
@@ -42,6 +53,14 @@ std::vector<std::string> find_misspelled_sorted(
     // TODO: for each word in file_words
     //       binary_search in sorted dict_words
     //       if not found → add to incorrect
+    std::sort(dict_words.begin(), dict_words.end());
+    for (const auto& word : file_words)
+    {
+        if ( !std::binary_search(dict_words.begin(), dict_words.end(), word))
+        {
+            incorrect.push_back(word);
+        }
+    }
     
     return incorrect;
 }
