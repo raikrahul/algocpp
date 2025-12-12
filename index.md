@@ -40,3 +40,4 @@ cmake --build . --target <executable_name>
 2. [Bidirectional Symbol Table](02_bidirectional_symbol_table.md) - [Code](02_bidirectional_symbol_table.cpp)
 3. [Inverted Index](03_inverted_index.md) - [Code](03_inverted_index.cpp)
 4. [LFU Cache](04_lfu_cache.md) - [Code](04_lfu_cache.cpp)
+5. [Minimum Gas Stops](05_minimum_gas_stops.md) - [Code](05_minimum_gas_stops.cpp)
