@@ -37,3 +37,4 @@ cmake --build . --target <executable_name>
 ## Problems
 
 1. [Spell Checker](01_spell_checker.md) - [Code](01_spell_checker.cpp)
+2. [Bidirectional Symbol Table](02_bidirectional_symbol_table.md) - [Code](02_bidirectional_symbol_table.cpp)
