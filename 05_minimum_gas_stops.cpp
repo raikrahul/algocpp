@@ -38,7 +38,17 @@ int FindMinStops(int d[], int n, int m) {
     // i=2: tank=4, d[2]=4 → 4<4? NO → tank=4-4=0
     // i=3: tank=0, d[3]=2 → 0<2? YES → tank=7, stops=2 → tank=7-2=5
     // return 2
-    return -1; // STUB
+    int tank = m;
+    int stops = 0;
+    for ( int leg = 0; leg < n -1 ; leg++)
+    {
+        if ( tank < d[leg] ) {
+            tank = m;
+            stops++;
+        }
+        tank -= d[leg];
+    }
+    return stops;
 }
 
 // Helper to run test with vector
@@ -210,17 +220,17 @@ void test_zigzag() {
 void test_almost_no_stops() {
     // d[]={3,3,3,3,3,3}, n=7, M=10
     // 6 legs × 3 miles = 18 miles, tank=10
-    // leg0: 10-3=7
-    // leg1: 7-3=4
-    // leg2: 4-3=1, 1<3→refuel→10, stops=1, 10-3=7
-    // leg3: 7-3=4
-    // leg4: 4-3=1, 1<3→refuel→10, stops=2, 10-3=7
-    // leg5: 7-3=4→ARRIVED
-    // Expected: 2
+    // i=0: 10<3? ✗ → 10-3=7
+    // i=1: 7<3? ✗ → 7-3=4
+    // i=2: 4<3? ✗ → 4-3=1
+    // i=3: 1<3? ✓ → refuel→10, stops=1, 10-3=7
+    // i=4: 7<3? ✗ → 7-3=4
+    // i=5: 4<3? ✗ → 4-3=1→ARRIVED
+    // Expected: 1 (NOT 2, original trace was wrong)
     std::vector<int> d = {3, 3, 3, 3, 3, 3};
     int result = FindMinStopsVec(d, 7, 10);
-    assert(result == 2);
-    std::cout << "test_almost_no_stops PASSED: expected=2, got=" << result << "\n";
+    assert(result == 1);
+    std::cout << "test_almost_no_stops PASSED: expected=1, got=" << result << "\n";
 }
 
 int main() {
