@@ -36,4 +36,4 @@ cmake --build . --target <executable_name>
 
 ## Problems
 
-<!-- Add problem entries here -->
+1. [Spell Checker](01_spell_checker.md) - [Code](01_spell_checker.cpp)
