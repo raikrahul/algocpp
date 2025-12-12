@@ -92,3 +92,19 @@ TRACE FOR E3 FIX:
 - Stored: map₂ = value_to_key (stores value→key pairs)
 - Have: value (from function parameter)
 - Get: value_to_key[value] = old_key ✓
+
+---
+
+E5. TEST LINE 296 → assert(!bm.getByValue(i*10).has_value()) → TEST LOGIC WRONG
+→ TRACE: initial put(i, i*10) for i=0..9999, overwrite put(i, i*100) for i=0..4999
+→ i=10: old_val=10×10=100, new_val=10×100=1000
+→ i=1: old_val=1×10=10, new_val=1×100=100
+→ After put(10,1000): map₂[100] erased (was 10's old value)
+→ After put(1,100): map₂[100]=1 inserted (1's new value)
+→ getByValue(100) returns 1, NOT nullopt
+→ TEST EXPECTED: getByValue(100)=nullopt (old value of key 10)
+→ BUT: getByValue(100)=1 (new value of key 1)
+→ ROOT: old values (i×10) and new values (i×100) OVERLAP for i≥10 vs i≥1
+→ 10×10=100=1×100, 20×10=200=2×100, ..., 90×10=900=9×100
+→ FIX: use non-overlapping scheme: old=i×2 (even), new=i×2+1 (odd)
+→ LESSON: when testing overwrite, ensure old and new value sets are DISJOINT
