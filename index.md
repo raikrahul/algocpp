@@ -48,3 +48,4 @@ cmake --build . --target <executable_name>
 10. [Recurrence DP](10_recurrence_dp.md) - [Code](10_recurrence_dp.cpp)
 
 11. [Legal Paths](11_legal_paths.md) - [Code](11_legal_paths.cpp)
+12. [Max Sum No Adjacent](12_max_sum_no_adjacent.md) - [Code](12_max_sum_no_adjacent.cpp)
