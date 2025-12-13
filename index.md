@@ -52,3 +52,4 @@ cmake --build . --target <executable_name>
 13. [SuperStack O(1) Max](13_super_stack.md) - [Code](13_super_stack.cpp)
 14. [Queue with Stacks](14_queue_with_stacks.md) - [Code](14_queue_with_stacks.cpp)
 15. [Stock Span](15_stock_span.md) - [Code](15_stock_span.cpp)
+16. [SuperQueue O(1)](16_superqueue.md) - [Code](16_superqueue.cpp)
