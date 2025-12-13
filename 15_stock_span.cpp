@@ -1,35 +1,37 @@
 #include <iostream>
 #include <vector>
-#include <stack>
 #include <cassert>
 
 // A[0..n-1] = prices → S[0..n-1] = spans
 // S[i] = count of consecutive elements A[j] immediately before A[i] where A[j] ≤ A[i], including A[i]
 // Example: A={6,3,4,5,2} → S={1,1,2,3,1}
+// 
+// JUMP-BASED SOLUTION (NO std::stack):
+// Instead of stack, use S[j] to jump backward
+// S[j] = span at j = number of elements ≤ A[j] before j
+// If A[j] ≤ A[i], skip j and all elements in S[j] (they are also ≤ A[j] ≤ A[i])
+// Jump: j = j - S[j]
 std::vector<int> computeSpan(const std::vector<int>& A) {
     int n = A.size();
-    std::vector<int> S(n);           // S[i] will hold span of A[i]
-    std::stack<int> stk;             // stack of indices, not values 
+    std::vector<int> S(n);  // S[i] holds span, also used for jumping
     
     for (int i = 0; i < n; i++) {
-        // TODO: Pop indices from stack while they are "useless" for future elements
-        // Hint: A[stk.top()] ??? A[i] → what comparison?
+        int j = i - 1;  // start immediately left of i
         
-        // TODO: Calculate S[i] using stack state
-        // If stack empty: S[i] = ???
-        // If stack not empty: S[i] = i - stk.top() or i - stk.top() - 1 or ???
-        
-        // TODO: Push current index onto stack
-        // Why? Current index might be stopper for future elements
-        while (!stk.empty() && A[stk.top()] <= A[i]) {
-            stk.pop();
+        // j=i-1: check A[j] > A[i]?
+        // if not, jump by S[j] (skip elements known to be ≤ A[j])
+        // repeat until stopper found or j < 0
+        while (j >= 0 && A[j] <= A[i]) {
+            j = j - S[j];  // JUMP: skip S[j] elements at once
+            // j=2, S[2]=2 → j=0 (skipped indices 2,1)
+            // j=1, S[1]=1 → j=0 (skipped index 1)
         }
-        if (stk.empty()) {
-            S[i] = i + 1;
+        
+        if (j < 0) {
+            S[i] = i + 1;  // no stopper, span = all left elements + self
         } else {
-            S[i] = i - stk.top();
+            S[i] = i - j;  // stopper at j, span = distance from j to i
         }
-        stk.push(i);
     }
     
     return S;

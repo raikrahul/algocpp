@@ -62,3 +62,24 @@ E5. READING SKIP → glossed over "≤" vs "<" in problem definition
     WHY SLOPPY: 3 decades of skimming
     MISSED: A[j] ≤ A[i] counts toward span, not A[j] < A[i]
     PREVENT: underline/highlight comparison operators in problem statement
+
+E6. CONCEPTUAL BLOCK → could not connect stopper to stack
+    WHY SLOPPY: saw "stack" as magic trick, not derived from scan order
+    MISSED: scan right-to-left = LIFO = stack
+    PREVENT: trace operations (add, check, remove) before picking structure
+
+E7. CONCEPTUAL BLOCK → thought pop removes stopper
+    WHY SLOPPY: did not trace while loop condition carefully
+    MISSED: pop when A[top] ≤ A[i], stop when A[top] > A[i], stopper never popped
+    PREVENT: trace condition → action mapping for each loop
+
+E8. MEMORY MODEL CONFUSION → thought [0,1,2,3] existed then became [0,3]
+    WHY SLOPPY: imagined "all at once" instead of step-by-step
+    MISSED: pop happens before push at each i, stack never has all indices
+    PREVENT: draw stack after EACH operation, not after each i
+
+E9. ALTERNATIVE INSIGHT → jump using S[j] instead of stack
+    WHY MISSED: fixated on std::stack as only solution
+    WHAT LEARNED: S[j] = span = how many to skip = jump distance
+    PREVENT: ask "what data do I already have that encodes same info?"
+
