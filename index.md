@@ -47,3 +47,4 @@ cmake --build . --target <executable_name>
 9. [Student Test strategies](09_student_test.md) - [Code](09_student_test.cpp)
 10. [Recurrence DP](10_recurrence_dp.md) - [Code](10_recurrence_dp.cpp)
 
+11. [Legal Paths](11_legal_paths.md) - [Code](11_legal_paths.cpp)
