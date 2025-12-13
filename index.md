@@ -53,3 +53,4 @@ cmake --build . --target <executable_name>
 14. [Queue with Stacks](14_queue_with_stacks.md) - [Code](14_queue_with_stacks.cpp)
 15. [Stock Span](15_stock_span.md) - [Code](15_stock_span.cpp)
 16. [SuperQueue O(1)](16_superqueue.md) - [Code](16_superqueue.cpp)
+17. [Routing Table](17_routing_table.md) - [Code](17_routing_table.cpp)
