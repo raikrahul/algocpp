@@ -33,9 +33,9 @@ using namespace std;
 //
 // Base case: depth == n → push current to result
 // Recursive: for each unused index i, pick it, recurse, unpick
-// ----------------------------------------------------------------------------
-void perm_helper(const string &s, int n, int depth, string &current,
-                 vector<bool> &used, vector<string> &result) {
+//----------------------------------------------------------------------------
+void perm_helper(const string &s, int n, string &current, vector<bool> &used,
+                 vector<string> &result) {
   // TODO: base case
   // depth == n → push current to result, return
 
@@ -48,7 +48,7 @@ void perm_helper(const string &s, int n, int depth, string &current,
   //         current.pop_back()     // ← DO NOT FORGET
   //         used[i] = false        // ← DO NOT FORGET
 
-  if (depth == n) {
+  if (current.size() == n) {
     result.push_back(current);
     return;
   }
@@ -56,7 +56,7 @@ void perm_helper(const string &s, int n, int depth, string &current,
     if (!used[i]) {
       used.at(i) = true;
       current.push_back(s[i]);
-      perm_helper(s, n, depth + 1, current, used, result);
+      perm_helper(s, n, current, used, result);
       current.pop_back();
       used.at(i) = false;
     }
@@ -79,7 +79,7 @@ vector<string> permutations(const string &s) {
 
   vector<bool> used(n, false);
 
-  perm_helper(s, n, 0, current, used, result);
+  perm_helper(s, n, current, used, result);
 
   return result;
 }

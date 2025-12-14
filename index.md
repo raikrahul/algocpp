@@ -57,3 +57,4 @@ cmake --build . --target <executable_name>
 18. [T9 Predictive Text](18_t9_predictive_text.md) - [Code](18_t9_predictive_text.cpp)
 19. [URL Filter](19_url_filter.md) - [Code](19_url_filter.cpp)
 20. [N-Length Permutations](20_permutations.md) - [Code](20_permutations.cpp)
+21. [Subset Sum Combinations](21_subset_sum_combinations.md) - [Code](21_subset_sum_combinations.cpp)
