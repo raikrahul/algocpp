@@ -1,0 +1,32 @@
+1. blacklist₀={} → size=0 → draw box `┌─────────┐ │ empty   │ └─────────┘` → write `std::unordered_set<std::string> blacklist;` → unordered_set chosen ∵ lookup O(1) vs vector O(n) → 10⁶ URLs × 10⁶ blacklist = 10¹² ops ✗ vs 10⁶ URLs × O(1) = 10⁶ ops ✓
+2. file₁ contains `bad1.com\nbad2.com\nbad3.com` → open file₁ → read line₁="bad1.com" → blacklist.insert("bad1.com") → blacklist={"bad1.com"} size=1 → read line₂="bad2.com" → blacklist.insert("bad2.com") → blacklist={"bad1.com","bad2.com"} size=2 → read line₃="bad3.com" → blacklist.insert("bad3.com") → blacklist={"bad1.com","bad2.com","bad3.com"} size=3 → write `std::ifstream file(filename); std::string line; while(std::getline(file, line)) { blacklist.insert(line); }`
+3. file₂ contains `bad1.com\nbad4.com` → blacklist before={"bad1.com","bad2.com","bad3.com"} size=3 → read line₁="bad1.com" → blacklist.insert("bad1.com") → already exists → size stays 3 → read line₂="bad4.com" → blacklist.insert("bad4.com") → blacklist={"bad1.com","bad2.com","bad3.com","bad4.com"} size=4 → ∴ unordered_set handles duplicates automatically → no extra code needed
+4. input contains `good1.com\nbad1.com\ngood2.com\nbad2.com\ngood3.com` → blacklist={"bad1.com","bad2.com"} → iter₁: url="good1.com" → blacklist.count("good1.com")=0 → 0≠1 → skip → iter₂: url="bad1.com" → blacklist.count("bad1.com")=1 → 1=1 ✓ → write to output → iter₃: url="good2.com" → count=0 → skip → iter₄: url="bad2.com" → count=1 ✓ → write → iter₅: url="good3.com" → count=0 → skip → output={"bad1.com","bad2.com"} → write `if (blacklist.count(url)) { out << url << "\n"; }`
+5. perf(input, n=7) → input={"url0.com","url1.com","url2.com"} → input.size()=3 → blacklist={"url1.com"} → iter₀: idx=0%3=0 → url=urls[0]="url0.com" → blacklist.count=0 → passed++ → passed=1 → iter₁: idx=1%3=1 → url="url1.com" → count=1 → blocked → passed=1 → iter₂: idx=2%3=2 → url="url2.com" → count=0 → passed=2 → iter₃: idx=3%3=0 → wrap → url="url0.com" → passed=3 → iter₄: idx=4%3=1 → url="url1.com" → blocked → passed=3 → iter₅: idx=5%3=2 → passed=4 → iter₆: idx=6%3=0 → passed=5 → ∴ modulo wraps when n>size → write `for(int i=0; i<n; i++) { int idx = i % urls.size(); if(blacklist.count(urls[idx])==0) passed++; }`
+6. clearFilter() → blacklist before={"bad1.com","bad2.com","bad3.com"} size=3 → blacklist.clear() → blacklist after={} size=0 → draw `┌─────────┐ │ size=3  │ └─────────┘ → clear() → ┌─────────┐ │ size=0  │ └─────────┘` → write `void clearFilter() { blacklist.clear(); }`
+7. draw hash table structure → `┌────────────────────────────────────────┐ │ bucket[0] → "bad1.com" → ∅             │ │ bucket[1] → ∅                           │ │ bucket[2] → "bad2.com" → "bad3.com" → ∅ │ │ bucket[3] → ∅                           │ └────────────────────────────────────────┘` → lookup "bad2.com" → hash("bad2.com") % bucket_count = 2 → traverse bucket[2] → compare "bad2.com"=="bad2.com" ✓ → found → O(1) avg → collision case: bucket[2] has 2 elements → worst O(k) where k=chain length
+8. timing calculation → start=chrono::now() → run n=10⁶ lookups → end=chrono::now() → duration=(end-start) → ms=duration_cast<milliseconds>(duration).count() → write `auto start = std::chrono::high_resolution_clock::now();` ... `auto end = std::chrono::high_resolution_clock::now(); auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count();`
+9. DO BY HAND: blacklist={"a.com","b.com","c.com"} → input={"x.com","a.com","y.com","b.com","z.com","c.com","w.com"} → count total=7 → count in blacklist: x∉{a,b,c} ✗ → a∈{a,b,c} ✓ → y∉ ✗ → b∈ ✓ → z∉ ✗ → c∈ ✓ → w∉ ✗ → filtered output={"a.com","b.com","c.com"} count=3 → passed=7-3=4 → verify: 4 URLs not in blacklist ✓
+10. DO BY HAND: n=10, input.size()=4, urls={"u0","u1","u2","u3"} → calculate all indices: i=0→0%4=0 → i=1→1%4=1 → i=2→2%4=2 → i=3→3%4=3 → i=4→4%4=0 (wrap) → i=5→5%4=1 → i=6→6%4=2 → i=7→7%4=3 → i=8→8%4=0 → i=9→9%4=1 → sequence: u0,u1,u2,u3,u0,u1,u2,u3,u0,u1 → blacklist={"u1","u3"} → count u1 appearances=3 → count u3 appearances=2 → blocked=3+2=5 → passed=10-5=5 ✓
+11. DO BY HAND: file contains `bad.com\r\n` (Windows CRLF) → getline reads "bad.com\r" → line.back()='\r' (ASCII 13) → line.back()=='\r' ✓ → line.pop_back() → line="bad.com" → now blacklist.insert("bad.com") matches input "bad.com" → without trim: "bad.com\r" ≠ "bad.com" → hash("bad.com\r") ≠ hash("bad.com") → lookup fails → ∴ trim is required → write `if (!line.empty() && line.back() == '\r') line.pop_back();`
+12. DO BY HAND: input.size()=0 → n=100 → idx=i%0 → division by zero → crash → ∴ check before loop → write `if (urls.empty()) { std::cout << "passed=0, time=0ms\n"; return; }`
+
+---
+
+PREDICTED FAILURES
+
+F1. file not opened → ifstream.is_open()=false → while(getline) runs 0 times → blacklist stays empty → all URLs pass filter → expected: some blocked → actual: none blocked ✗ → fix: check `if (!file.is_open()) { std::cerr << "error"; return; }`
+F2. Windows line endings → file has `bad.com\r\n` → getline reads "bad.com\r" → stored as "bad.com\r" → input has "bad.com" → "bad.com\r" ≠ "bad.com" → lookup fails → expected: blocked → actual: passed ✗ → fix: `line.pop_back()` when `line.back()=='\r'`
+F3. division by zero → n=100, input empty → urls.size()=0 → idx=i%0 → undefined behavior → crash → expected: graceful exit → actual: crash ✗ → fix: check `urls.empty()` before loop
+F4. output file mode → ofstream default truncates → if user expects append → stale data issue → expected: append → actual: overwrite ✗ → clarify requirements → default truncate is correct for filter()
+F5. wrong clock → using system_clock → time can go backwards (NTP sync) → negative duration possible → expected: positive ms → actual: negative ✗ → fix: use `high_resolution_clock` or `steady_clock`
+F6. memory usage → 10⁷ URLs × 100 bytes avg = 10⁹ bytes = 1 GB → perf() loads all URLs into vector → RAM exceeded → expected: run → actual: OOM ✗ → accept or stream instead
+F7. hash collision → bucket[k] has chain length m → lookup O(m) instead of O(1) → rare but possible → expected: O(1) → actual: O(m) in worst case → acceptable for average case
+
+SELF-CHECK
+
+Did I introduce new things without deriving? → No → unordered_set derived from O(1) vs O(n) comparison in step 1
+Did I jump ahead? → No → each step uses data from previous step
+Was I axiomatic? → ✓ → started from empty blacklist, built up with actual operations
+Did I use real numbers? → ✓ → "bad1.com", size=3, n=7, idx=3%3=0
+Did I make user do by hand? → ✓ → steps 9,10,11,12 are explicit hand calculations

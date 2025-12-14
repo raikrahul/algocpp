@@ -54,3 +54,6 @@ cmake --build . --target <executable_name>
 15. [Stock Span](15_stock_span.md) - [Code](15_stock_span.cpp)
 16. [SuperQueue O(1)](16_superqueue.md) - [Code](16_superqueue.cpp)
 17. [Routing Table](17_routing_table.md) - [Code](17_routing_table.cpp)
+18. [T9 Predictive Text](18_t9_predictive_text.md) - [Code](18_t9_predictive_text.cpp)
+19. [URL Filter](19_url_filter.md) - [Code](19_url_filter.cpp)
+20. [N-Length Permutations](20_permutations.md) - [Code](20_permutations.cpp)
